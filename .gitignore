@@ -1,0 +1,29 @@
+# Secrets, private profiles, backup files
+fleet_config.json
+fleet_config.tmp
+*.bak
+*.key
+*.pem
+*.crt
+*.cer
+*.p12
+*.pfx
+.env
+.env.*
+# Runtime output and user data
+*.sqlite
+*.sqlite3
+*.db
+*.log
+*.csv
+*.zip
+*_preview.png
+*_screenshot.png
+screenshots/
+exports/
+# Python/tooling
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/

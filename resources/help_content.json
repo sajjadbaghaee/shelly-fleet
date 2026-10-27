@@ -1,0 +1,296 @@
+{
+  "Quick Start": [
+    [
+      "heading",
+      "FIRST CONNECTION — FIVE STEPS"
+    ],
+    [
+      "body",
+      "1. Install Python and the dependencies (Install tab).\n2. Configure each Shelly with the MQTT broker hostname, listener port, credentials and unique topic prefix.\n3. Open Broker profiles. Edit Default, enter the MQTT host, connection type, listener port, and credentials. For private TLS, select the trusted CA certificate. Save settings.\n4. Click Connect all. The app connects concurrently to every configured broker that has assigned devices.\n5. Add a device and enter its exact MQTT topic prefix; select Default or another broker profile. Once fresh switch status arrives, ON/OFF/TOGGLE become available."
+    ],
+    [
+      "heading",
+      "MULTIPLE BROKERS"
+    ],
+    [
+      "body",
+      "Most devices use Default. For devices connecting to another server, add a named profile in Broker profiles and assign that broker from the device page or Edit device. Different profiles have separate sessions, credentials, TLS modes, ports, and subscriptions."
+    ],
+    [
+      "notice",
+      "SAFETY: Remote switching can energize a connected appliance. Confirm the physical plug and load before sending commands."
+    ]
+  ],
+  "Installation": [
+    [
+      "heading",
+      "WINDOWS"
+    ],
+    [
+      "body",
+      "Install Python 3.10+ from python.org, including Add Python to PATH. Extract the ZIP. Run install_dependencies.bat, then start_shelly_fleet.bat. On other operating systems use a supported Python and Tkinter installation."
+    ],
+    [
+      "code",
+      "python -m pip install -r requirements.txt\npython shelly_fleet_gui.py"
+    ],
+    [
+      "heading",
+      "FILES AND DATA LOCATION"
+    ],
+    [
+      "body",
+      "The source distribution should contain only program files, examples, and documentation. Broker addresses, device IDs, credentials, private keys, and personal certificates belong in local user settings, not in a public repository."
+    ],
+    [
+      "code",
+      "Windows: %APPDATA%\\ShellyFleetDesktop\\fleet_config.json"
+    ],
+    [
+      "body",
+      "A new installation starts with one empty Default broker profile and no devices. Your own saved settings load from the local user configuration folder on subsequent launches. Passwords are excluded from JSON; optional secure storage uses the operating system credential manager. Never commit configuration files, certificates, or screenshots of your configured fleet."
+    ],
+    [
+      "heading",
+      "OPTIONAL CONFIGURATION IMPORT"
+    ],
+    [
+      "body",
+      "To import a configuration that you explicitly select, choose Broker profiles → Import configuration…, review the private values that will be loaded, and confirm the replacement. The source file is not modified. For safety, password values are not imported; enter your broker passwords manually after importing. Make a backup of your current configuration first."
+    ]
+  ],
+  "Shelly Setup": [
+    [
+      "heading",
+      "CONFIGURE A SHELLY PLUG S GEN3"
+    ],
+    [
+      "body",
+      "1. Connect the plug to Wi-Fi and open its local web page (for example http://DEVICE_IP).\n2. Go to Settings > MQTT and enable MQTT.\n3. Set Server to BROKER_HOST:PORT. Enter credentials required by that broker.\n4. Give the plug a unique MQTT prefix for that broker. Enable MQTT Control and Generic status update over MQTT.\n5. Save and reboot if required. Verify /rpc/MQTT.GetStatus reports connected: true."
+    ],
+    [
+      "heading",
+      "TLS TRUST AND DEVICE IDENTITY"
+    ],
+    [
+      "body",
+      "Use Default TLS when your broker certificate chains to a CA trusted by Shelly. For a private CA, upload a PEM CA bundle on Shelly and choose User TLS (ssl_ca: user_ca.pem). Disable client certificate identification if the broker uses password authentication only; enable it only for properly configured mutual TLS with a separate client certificate/key."
+    ],
+    [
+      "code",
+      "Generic example (replace placeholders):\nServer: <BROKER_HOST>:8883\nPrefix: <DEVICE_PREFIX>\nssl_ca: user_ca.pem    (private CA only)\nuse_client_cert: false (password-only TLS example)\nenable_control: true\nstatus_ntf: true"
+    ],
+    [
+      "heading",
+      "VERIFY THE PLUG"
+    ],
+    [
+      "code",
+      "http://DEVICE_IP/rpc/MQTT.GetConfig\nhttp://DEVICE_IP/rpc/MQTT.GetStatus"
+    ],
+    [
+      "body",
+      "Never publish the real JSON configuration without redacting credentials, addresses and device identifiers."
+    ]
+  ],
+  "Broker Profiles": [
+    [
+      "heading",
+      "DEFAULT AND NAMED BROKERS"
+    ],
+    [
+      "body",
+      "The Default profile always exists. Click Broker profiles > Edit selected to configure it. Click Add broker to create profiles such as Building A or Lab B. Each profile has its own hostname, username, password, CA, transport type, TLS port and plain MQTT port."
+    ],
+    [
+      "heading",
+      "HOW CONNECTION ROUTING WORKS"
+    ],
+    [
+      "body",
+      "Click Connect all. The app connects independently to each configured profile currently used by devices. A disconnected secondary server does not stop devices on a connected broker. Each device page prominently shows CURRENT MQTT BROKER with profile name, host, port, transport and broker-session status. The CHANGE THIS PLUG TO selection does not change the assignment until Apply broker is clicked. A new session is created automatically if necessary."
+    ],
+    [
+      "heading",
+      "REMEMBERED PORTS PER PROFILE"
+    ],
+    [
+      "code",
+      "Example — Default broker: TLS 8883, plain 1883\nExample — Laboratory broker: TLS 8884, plain 1886"
+    ],
+    [
+      "body",
+      "Switching the connection type restores that profile’s last saved port for the selected mode. It does not change other broker profiles or the settings stored on Shelly devices."
+    ],
+    [
+      "heading",
+      "CA CERTIFICATES"
+    ],
+    [
+      "body",
+      "For TLS, browse to a PEM/CRT CA certificate. Leave CA path empty to use the operating system’s public trusted roots. TLS hostname verification remains enabled in both cases. This computer-side CA path is separate from the CA certificate uploaded to the physical plug."
+    ],
+    [
+      "notice",
+      "Plain MQTT exposes passwords, telemetry and commands to observers on the network. Use verified TLS over the public internet; use plain MQTT only on trusted private networks or through a protected VPN."
+    ]
+  ],
+  "Devices & Data": [
+    [
+      "heading",
+      "UP TO 100 DEVICES"
+    ],
+    [
+      "body",
+      "Click + Add plug. Enter a friendly name, the exact MQTT prefix, switch channel (usually 0 on Plug S Gen3) and broker profile. Each device gets an automatically generated page accessible through the sidebar. A profile can be changed directly from that page using its broker selector."
+    ],
+    [
+      "code",
+      "Example prefix: <DEVICE_PREFIX>\nCommand topic: <prefix>/command/switch:0\nStatus topic:  <prefix>/status/switch:0\nError topic:   <prefix>/error/switch:0"
+    ],
+    [
+      "heading",
+      "UNDERSTANDING THE TWO DEVICE INDICATORS"
+    ],
+    [
+      "body",
+      "The first dot beside a device represents its last reported relay state. The second dot represents the device’s MQTT presence. These are independent signals and must be interpreted separately."
+    ],
+    [
+      "status_table",
+      ""
+    ],
+    [
+      "heading",
+      "HOW TO INTERPRET THESE INDICATORS"
+    ],
+    [
+      "body",
+      "RELAY: Green means the last reported switch state was ON; red means OFF. Gray means no switch state has been received. This is the LAST REPORTED value, not confirmation of the current physical state. An ON reading can remain visible after the plug loses connectivity. Check the last-update time and the stale warning."
+    ],
+    [
+      "body",
+      "PLUG MQTT: Green indicates an online presence report or fresh non-retained device status. Red indicates an offline notification or a disconnected assigned broker. Gray means the online state has not yet been established. The app listens to <prefix>/online and Shelly’s broker Last Will (LWT) when available. A green broker connection indicator alone does not mean the physical plug is online."
+    ],
+    [
+      "notice",
+      "Safety: Never interpret an offline, unknown, or stale relay reading as proof that connected equipment is de-energized. Do not switch safety-critical loads based only on these indicators."
+    ],
+    [
+      "heading",
+      "OVERVIEW & COMMANDS"
+    ],
+    [
+      "body",
+      "The overview shows broker, switch state, current power in W, accumulated energy in Wh, last update, and per-device ON/OFF/TOGGLE buttons. Buttons activate only with a connected assigned broker, an accepted MQTT subscription, and fresh reported device state. Requests are not retained. A published command is not confirmation of physical switching."
+    ],
+    [
+      "heading",
+      "MEASUREMENTS & CSV"
+    ],
+    [
+      "body",
+      "Each device page displays its own power, voltage, current and accumulated energy. Charts retain up to 240 live samples while the application runs. Export CSV saves the current session of power readings only. The app does not provide a time-series database or billing-grade metering."
+    ],
+    [
+      "heading",
+      "IDENTIFIERS"
+    ],
+    [
+      "body",
+      "Two devices on different brokers may use the same MQTT prefix without message crossover. Prefix/switch combinations must be unique only within a single broker. The application does not automatically discover devices."
+    ]
+  ],
+  "Troubleshooting": [
+    [
+      "heading",
+      "PROFILE DOES NOT CONNECT"
+    ],
+    [
+      "body",
+      "Verify that broker host is a DNS name or IP without a scheme; confirm port, transport mode, credentials, client permissions, broker listener, firewall and network reachability. For TLS, check the CA chain and hostname. Other connected broker profiles continue working."
+    ],
+    [
+      "heading",
+      "BROKER CONNECTED BUT DEVICE STALE"
+    ],
+    [
+      "body",
+      "Confirm the plug is online and connected to the exact server assigned in the GUI. Check /rpc/MQTT.GetStatus, topic prefix and switch channel, enable_control and status_ntf, and topic ACLs. Use Refresh Status on its page to request an update. A broker session being online does not prove a physical plug is online."
+    ],
+    [
+      "heading",
+      "CONTROLS DISABLED"
+    ],
+    [
+      "body",
+      "An accepted subscription and a fresh device status are required. Status expires after 120 seconds. Device pages show broker-specific session conditions, and the activity log reports errors. Never assume an offline plug is OFF."
+    ],
+    [
+      "heading",
+      "TLS CERTIFICATE ERRORS"
+    ],
+    [
+      "body",
+      "Your client-side CA file must trust the server certificate and hostname. Use your own CA for a privately issued certificate. Do not disable TLS verification to hide certificate errors. Check computer/device clock if certificates appear not yet valid."
+    ],
+    [
+      "heading",
+      "UNEXPECTED PORT"
+    ],
+    [
+      "body",
+      "Open the relevant named broker profile and switch between TLS and Plain to see their separate saved ports. Save settings to persist the values. Each broker stores its ports independently."
+    ],
+    [
+      "heading",
+      "DEVICE MOVED TO ANOTHER BROKER"
+    ],
+    [
+      "body",
+      "Update the physical Shelly MQTT server separately. Then pick the matching profile on its GUI page. Both sides must use the same broker. Old status readings will be invalidated when you change a device’s broker assignment."
+    ]
+  ],
+  "Security & FAQ": [
+    [
+      "heading",
+      "SECURITY"
+    ],
+    [
+      "body",
+      "Prefer TLS for internet-hosted brokers. Use MQTT ACLs with least privilege, distinct credentials per deployment when possible, and random broker client IDs. Avoid retained ON/OFF commands. Change exposed passwords immediately. Neither private certificates nor password files belong in a public code repository."
+    ],
+    [
+      "heading",
+      "WHAT IS SAVED?"
+    ],
+    [
+      "body",
+      "The application stores broker names, hostnames, ports, usernames, CA paths, device names, topic prefixes, and assignments in its local configuration under %APPDATA%\\ShellyFleetDesktop. These details must not be included in source distributions; local configuration remains sensitive even without passwords. Do not upload fleet_config.json or screenshots of your configured app. Passwords are held in memory or optionally in the OS credential manager."
+    ],
+    [
+      "heading",
+      "HOW DO I USE A DIFFERENT BROKER FOR ONE PLUG?"
+    ],
+    [
+      "body",
+      "Create a broker profile in Broker profiles. Open the plug’s page, choose the profile from Assigned MQTT broker, and select Apply broker. Other plugs continue using Default or their own profiles."
+    ],
+    [
+      "heading",
+      "CAN I USE TLS AND NON-TLS AT THE SAME TIME?"
+    ],
+    [
+      "body",
+      "Yes. Different profiles establish separate MQTT clients and may use different transports simultaneously. Port settings are independent per profile and per transport."
+    ],
+    [
+      "heading",
+      "IS THE APPLICATION OFFICIAL SHELLY SOFTWARE?"
+    ],
+    [
+      "body",
+      "No. This is an independent Python desktop project. Shelly device features and MQTT payload formats may vary by generation or firmware. Verify compatibility before using a different product model."
+    ]
+  ]
+}
