@@ -18,6 +18,48 @@ Shelly Fleet is a desktop application for remotely controlling and monitoring up
 - Store configuration locally and optionally save broker passwords in the operating system credential manager.
 - Consult the built-in Help guide, maintained in `resources/help_content.json`.
 
+## Screenshots
+
+The screenshots below demonstrate the main application workflows. Broker addresses and device identifiers have been replaced with generic examples before publication. Electrical readings are sample snapshots, not live data.
+
+### Fleet overview
+
+The main dashboard shows individual switch states, live power readings, accumulated energy, broker assignments, and ON/OFF/TOGGLE controls.
+
+[![Shelly Fleet overview dashboard](docs/images/fleet-overview.png)](docs/images/fleet-overview.png)
+
+### Individual device control and power monitoring
+
+Each device has its own page with relay controls, current electrical measurements, and a session-based power history chart.
+
+<table>
+  <tr>
+    <th>Device ON</th>
+    <th>Device OFF</th>
+  </tr>
+  <tr>
+    <td><a href="docs/images/device-on.png"><img src="docs/images/device-on.png" alt="Individual device page showing relay ON, live power and chart" width="480" /></a></td>
+    <td><a href="docs/images/device-off.png"><img src="docs/images/device-off.png" alt="Individual device page showing relay OFF and power decreasing to zero" width="480" /></a></td>
+  </tr>
+</table>
+
+### Device and MQTT broker configuration
+
+Add devices with their MQTT topic prefix and switch channel, then assign the Default or another named broker profile. Broker settings support TLS (with optional custom CA trust) and plain MQTT for trusted private networks.
+
+<table>
+  <tr>
+    <th>Add a device</th>
+    <th>Broker profiles</th>
+    <th>Broker configuration</th>
+  </tr>
+  <tr>
+    <td><a href="docs/images/add-device.png"><img src="docs/images/add-device.png" alt="Dialog for adding an MQTT-enabled Shelly plug" width="300" /></a></td>
+    <td><a href="docs/images/broker-profiles.png"><img src="docs/images/broker-profiles.png" alt="MQTT broker profiles manager" width="300" /></a></td>
+    <td><a href="docs/images/broker-settings.png"><img src="docs/images/broker-settings.png" alt="MQTT broker configuration form" width="300" /></a></td>
+  </tr>
+</table>
+
 ## Requirements
 
 - Python 3.10 or later.
